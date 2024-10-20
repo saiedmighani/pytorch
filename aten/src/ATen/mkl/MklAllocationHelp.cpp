@@ -1,10 +1,10 @@
-#include <ATen/Version.h>
 #include <ATen/Config.h>
 
 #if AT_MKLDNN_ENABLED()
 #ifdef USE_MIMALLOC_ON_MKL
 #include <c10/core/impl/alloc_cpu.h>
-
+#include <mkl.h>
+#if INTEL_MKL_VERSION > 20230000L
 /*
 MKL have a method to register memory allocation APIs via i_malloc.h, High
 performance memory allocation APIs will help improve MKL performance.
@@ -24,5 +24,6 @@ bool register_mimalloc_api_to_mkl()
 }
 
 static bool g_b_registered_mkl_alloction = register_mimalloc_api_to_mkl();
+#endif
 #endif
 #endif
